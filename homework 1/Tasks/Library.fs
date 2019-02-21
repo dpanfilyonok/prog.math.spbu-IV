@@ -66,8 +66,8 @@ module ListReverse =
     
     // with tail rec
     let reverse2 xs = 
-        let rec loop ramainingList acc = 
-            match ramainingList with
+        let rec loop remainingList acc = 
+            match remainingList with
             | [] -> acc
             | head :: tail -> loop tail (head :: acc)
         loop xs []
