@@ -11,6 +11,7 @@ module Combinators =
 
 module Factorial =
     open Combinators    
+
     let facCondition n f = iif (n < 0) 0 f
 
     // let rec factorial1 n =  iif (isZero n) 1 ((*) n (factorial1 (n - 1)))
@@ -32,10 +33,11 @@ module Factorial =
                         | _ -> loop n 1)
 
     // folding
-    let factorial6 n = facCondition n (List.fold (*) 1 [1..n])
+    let factorial6 n = facCondition n (List.fold (*) 1 [1 .. n])
 
 module Fibonacci = 
     open Combinators
+
     let fibCondition n f = iif (n <= 0) 0 f
 
     // inf seq of fibs
@@ -64,8 +66,8 @@ module ListReverse =
     
     // with tail rec
     let reverse2 xs = 
-        let rec loop ys acc = 
-            match ys with
+        let rec loop ramainingList acc = 
+            match ramainingList with
             | [] -> acc
             | head :: tail -> loop tail (head :: acc)
         loop xs []
@@ -74,8 +76,10 @@ module ListOf2Pows =
     open Combinators
     open ListReverse
 
+    let makeListCondition n m f = iif (n < 0 && m < 0) [] f
+
     // o(n^2)
-    let makeList1 n m = [for each in n .. m do yield pown 2 each]
+    let makeList1 n m = makeListCondition n m [for each in n .. m do yield pown 2 each]
 
     // o(n) ith tail rec
     let makeList2 n m = 
@@ -83,4 +87,4 @@ module ListOf2Pows =
             match i with 
             | 0 -> acc
             | _ -> loop (pred i) ((acc.Head * 2) :: acc)
-        reverse2 <| loop (m - n) [pown 2 n]
+        makeListCondition n m (reverse2 <| loop (m - n) [pown 2 n])
