@@ -11,8 +11,8 @@ pool:
 
 variables:
   buildConfiguration: 'Release'
-  hw1: './homework\ 1/homework 1.sln'
+  hw1: './homework\ 1/homework\ 1.sln'
 
 steps:
 - script: dotnet build --configuration $(buildConfiguration) $(hw1)
-  displayName: 'dotnet build $(hw1)'
+  displayName: 'dotnet build hw1'
