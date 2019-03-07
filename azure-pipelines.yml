@@ -6,13 +6,18 @@
 trigger:
 - master
 
+strategy:
+  matrix:
+    hw1: 
+      sln_path: ./homework\ 1/homework\ 1.sln
+      hw_name: Homework 1
+
 pool:
   vmImage: 'Ubuntu-16.04'
 
 variables:
   buildConfiguration: 'Release'
-  hw1: './homework\ 1/homework\ 1.sln'
 
 steps:
-- script: dotnet build --configuration $(buildConfiguration) $(hw1)
-  displayName: 'dotnet build hw1'
+- script: dotnet build --configuration $(buildConfiguration) $(sln_path)
+  displayName: 'dotnet build $(hw_name)'
