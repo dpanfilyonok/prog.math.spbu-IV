@@ -1,0 +1,26 @@
+# ASP.NET Core
+# Build and test ASP.NET Core projects targeting .NET Core.
+# Add steps that run tests, create a NuGet package, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
+
+trigger:
+- master
+
+strategy:
+  matrix:
+    hw1: 
+      sln_path: ./homework\ 1/homework\ 1.sln
+      hw_name: Homework 1
+
+pool:
+  vmImage: 'Ubuntu-16.04'
+
+
+variables:
+  buildConfiguration: 'Release'
+
+steps:
+- script: dotnet build --configuration $(buildConfiguration) $(sln_path)
+  displayName: 'dotnet build $(hw_name)'
+- script: dotnet test --configuration $(buildConfiguration) $(sln_path)
+  displayName: 'dotnet test $(hw_name)'
