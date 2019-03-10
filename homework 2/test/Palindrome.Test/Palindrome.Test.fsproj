@@ -8,8 +8,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="UnitTest1.fs" />
-    <Compile Include="Program.fs" />
+    <Compile Include="UnitTest.fs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="FsUnit" Version="3.4.0" />
