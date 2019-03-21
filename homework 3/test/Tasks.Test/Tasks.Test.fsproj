@@ -8,6 +8,7 @@
   <ItemGroup>
     <Compile Include="CountOfEvenTest.fs" />
     <Compile Include="SeqOfPrimesTest.fs" />
+    <Compile Include="MapBinaryTreeTest.fs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="FsUnit" Version="3.4.0" />
