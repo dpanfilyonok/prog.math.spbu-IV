@@ -3,7 +3,7 @@ namespace Tests
 open NUnit.Framework
 open FsUnit
 
-open CountOfEven
+open Tasks
 
 [<TestFixture>]
 type CountOfEvenTest () =
@@ -40,14 +40,14 @@ type CountOfEvenTest () =
     [<Test>]
     [<TestCaseSource("testCases")>]
     member this.``usingFilter should work properly`` list expectedValue =
-        usingFilter list |> should equal expectedValue 
+        CountOfEven.usingFilter list |> should equal expectedValue 
 
     [<Test>]
     [<TestCaseSource("testCases")>]
     member this.``usingMap should work properly`` list expectedValue =
-        usingMap list |> should equal expectedValue 
+        CountOfEven.usingMap list |> should equal expectedValue 
 
     [<Test>]
     [<TestCaseSource("testCases")>]
     member this.``usingFold should work properly`` list expectedValue =
-        usingFold list |> should equal expectedValue 
+        CountOfEven.usingFold list |> should equal expectedValue 

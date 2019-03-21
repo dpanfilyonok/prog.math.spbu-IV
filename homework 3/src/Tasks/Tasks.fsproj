@@ -4,5 +4,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="CountOfEven.fs" />
+    <Compile Include="MapBinaryTree.fs" />
+    <Compile Include="SeqOfPrimes.fs" />
   </ItemGroup>
 </Project>
