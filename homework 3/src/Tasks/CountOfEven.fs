@@ -3,7 +3,7 @@
 module CountOfEven = 
     open System
 
-    module StuffFuns = 
+    module StuffFuncs = 
         let isEven x =  x % 2 = 0
         let mapSnd f (x, y) = x, f y
         let uncurry f (x, y) = f x y
@@ -12,7 +12,7 @@ module CountOfEven =
         let succ = (+) 1
         let mod2 = c (%) 2
 
-    open StuffFuns
+    open StuffFuncs
 
     /// Count of even in list using filter fun
     let usingFilter list =

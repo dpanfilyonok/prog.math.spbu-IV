@@ -6,5 +6,6 @@
     <Compile Include="CountOfEven.fs" />
     <Compile Include="MapBinaryTree.fs" />
     <Compile Include="SeqOfPrimes.fs" />
+    <Compile Include="ArithmeticParseTree.fs" />
   </ItemGroup>
 </Project>
