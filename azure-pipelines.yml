@@ -11,6 +11,9 @@ strategy:
     hw1: 
       sln_path: ./homework\ 1/homework\ 1.sln
       hw_name: Homework 1
+    hw3:
+      sln_path: ./homework\ 3/homework\ 3.sln
+      hw_name: Homework 3
 
 pool:
   vmImage: 'Ubuntu-16.04'
