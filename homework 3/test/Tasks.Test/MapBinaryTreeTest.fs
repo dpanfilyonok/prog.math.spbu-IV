@@ -10,7 +10,6 @@ type MapBinaryTreeTest () =
 
     let c f x y = f y x
 
-    let emptyTree = Empty
     let rootTree = Tree(-5, Empty, Empty)
     let balancedTree =  Tree(1, 
                             Tree(2, 
@@ -20,10 +19,6 @@ type MapBinaryTreeTest () =
                                 Tree(6, Empty, Empty), 
                                 Tree(7, Empty, Empty)))
     let flatternTree = Tree(1, Tree(2, Tree(3, Tree(4, Tree(5, Empty, Empty), Empty), Empty), Empty), Empty)
-
-    [<Test>]
-    member this.``mapping emptyTree with id should return same tree`` () =
-        emptyTree |> mapBinaryTree id |> should equal emptyTree
 
     [<Test>]
     member this.``mapping rootTree with id should return same tree`` () =
@@ -37,10 +32,6 @@ type MapBinaryTreeTest () =
     member this.``mapping flatternTree with id should return same tree`` () =
         flatternTree |> mapBinaryTree id |> should equal flatternTree
 
-
-    [<Test>]
-    member this.``mapping emptyTree with pown2 should return empty tree`` () =
-        emptyTree |> mapBinaryTree (c pown 2) |> should equal emptyTree
 
     [<Test>]
     member this.``mapping rootTree with pown2 should return correct tree`` () =

@@ -18,6 +18,7 @@ module CountOfEven =
     let usingFilter list =
         list
         |> List.filter isEven
+        |> List.length
 
     /// Count of even in list using map fun
     let usingMap list =

@@ -7,13 +7,16 @@ module SeqOfPrimes =
 
     /// If number is prime
     let isPrime num = 
-        let upperBound = int (sqrt <| float num)
-        let rec loop i =
-            if i <= upperBound then 
-                if num % i = 0 then false
-                else loop <| i + 1
-            else true     
-        loop 2
+        if num < 2 then false
+        else 
+            let upperBound = int (sqrt <| float num)
+            let rec loop i =
+                if i <= upperBound then 
+                    if num % i = 0 then false
+                    else loop <| i + 1
+                else true     
+            loop 2
+        
 
     /// Infinite seq of primes
     let primes = numbers |> Seq.filter isPrime
