@@ -20,7 +20,7 @@ module ArithmeticParseTree =
         let applyToEvaluatedPair f x y = curry (map evaluateTree) x y |> uncurry (f)
         let epsilon = 1e-7
         match tree with 
-        | Num(x) -> x
+        | Num x -> x
         | Add(l, r) -> applyToEvaluatedPair (+) l r
         | Sub(l, r) -> applyToEvaluatedPair (-) l r
         | Mult(l, r) -> applyToEvaluatedPair (*) l r
