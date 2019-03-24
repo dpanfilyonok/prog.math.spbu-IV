@@ -1,7 +1,6 @@
 namespace Tasks
 
 module MapBinaryTree = 
-
     /// Binary tree
     type 'a Tree = 
         | Tree of 'a * 'a Tree * 'a Tree

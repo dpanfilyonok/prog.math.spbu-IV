@@ -1,7 +1,6 @@
 namespace Tasks
 
 module SeqOfPrimes = 
-
     /// Infinite seq of natural numbers
     let numbers = Seq.initInfinite id
 
@@ -10,13 +9,9 @@ module SeqOfPrimes =
         if num < 2 then false
         else 
             let upperBound = int (sqrt <| float num)
-            let rec loop i =
-                if i <= upperBound then 
-                    if num % i = 0 then false
-                    else loop <| i + 1
-                else true     
-            loop 2
-        
+            seq { 2 .. upperBound }
+            |> Seq.exists (fun x -> num % x = 0)
+            |> not
 
-    /// Infinite seq of primes
+    /// Infinite seq of primes  
     let primes = numbers |> Seq.filter isPrime
