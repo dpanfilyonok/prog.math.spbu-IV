@@ -22,5 +22,5 @@ type ArithmeticParseTreeTest () =
 
     [<Test>]
     member this.``division by 0 should raise exception`` () =
-        let tree = Div(Num(1.), Num(0.))
-        tree |> evaluateTree |> ignore |> should throw typeof<System.DivideByZeroException>
+        let tree = Div(Num 1., Num 0.)
+        (fun () -> tree |> evaluateTree |> ignore) |> should throw typeof<System.DivideByZeroException>
