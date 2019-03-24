@@ -8,6 +8,9 @@ trigger:
 
 strategy:
   matrix:
+    utils:
+      sln_path: ./Utils/Utils.sln
+      hw_name: Utils
     hw1: 
       sln_path: ./homework\ 1/homework\ 1.sln
       hw_name: Homework 1
