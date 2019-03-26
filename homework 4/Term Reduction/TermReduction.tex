@@ -1,23 +1,23 @@
-
-\documentclass[12pt]{article}
+\documentclass{article}
 
 \usepackage{amsmath}
 
-\title{Problem 4.2}
-\author{Ilya Balashov}
+\title{Task 1. Lambda Term Reduction}
+\author{Dmitriy Panfilyonok}
 \date{}
 
 \begin{document}
-\maketitle
-
-\begin{align}
-S\ K\ K\ & = (\lambda x\ y\ z.x\ z\ (y\ z))\ (\lambda x\ y.x)\ (\lambda x\ y.x) \\
-& = (\lambda x.\lambda y.\lambda z.x\ z\ (y\ z))\ (\lambda x.\lambda y.x)\ (\lambda x. \lambda y.x) \\
-& \longrightarrow_{\beta, \alpha}  (\lambda y.\lambda z.(\lambda x.\lambda t.x)\ z\ (y\ z))\ (\lambda x.\lambda y.x) \\
-& \longrightarrow_\beta \lambda z.(\lambda x.\lambda t.x)\ z\ ((\lambda x.\lambda y.x)\ z) \\
-& \longrightarrow_\beta \lambda z.(\lambda t.z)\ ((\lambda x.\lambda y.x)\ z) \\
-& \longrightarrow_\beta \lambda z.z \\
-& = I
-\end{align}
-
+    \pagenumbering{gobble}
+    \maketitle
+    
+    \paragraph{}
+    \begin{align*}
+        ((\lambda a.(\lambda b.bb)(\lambda b.bb))b)((\lambda c.(cb))(\lambda a.a))
+        & = (\lambda a.(\lambda b.bb)(\lambda b.bb))b((\lambda c.cb)(\lambda a.a)) \\
+        & \rightarrow_\beta (\lambda b.bb)(\lambda b.bb)((\lambda c.cb)(\lambda a.a)) \\
+        & \rightarrow_\beta (\lambda b.bb)(\lambda b.bb)((\lambda a.a)b) \\
+        & \rightarrow_\beta (\lambda b.bb)(\lambda b.bb)b \\
+        & \rightarrow_\beta \ldots
+    \end{align*}
+    
 \end{document}
