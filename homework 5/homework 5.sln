@@ -1,0 +1,39 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26124.0
+MinimumVisualStudioVersion = 15.0.26124.0
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "T1-BalancedBrackets", "T1-BalancedBrackets", "{2F416E46-591A-4554-847A-272586646F68}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "BalancedBrackets", "T1-BalancedBrackets\BalancedBrackets\BalancedBrackets.fsproj", "{CA76D5E9-BB20-4B97-86DE-D7CAA417797F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CA76D5E9-BB20-4B97-86DE-D7CAA417797F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA76D5E9-BB20-4B97-86DE-D7CAA417797F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA76D5E9-BB20-4B97-86DE-D7CAA417797F}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{CA76D5E9-BB20-4B97-86DE-D7CAA417797F}.Debug|x64.Build.0 = Debug|Any CPU
+		{CA76D5E9-BB20-4B97-86DE-D7CAA417797F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{CA76D5E9-BB20-4B97-86DE-D7CAA417797F}.Debug|x86.Build.0 = Debug|Any CPU
+		{CA76D5E9-BB20-4B97-86DE-D7CAA417797F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA76D5E9-BB20-4B97-86DE-D7CAA417797F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA76D5E9-BB20-4B97-86DE-D7CAA417797F}.Release|x64.ActiveCfg = Release|Any CPU
+		{CA76D5E9-BB20-4B97-86DE-D7CAA417797F}.Release|x64.Build.0 = Release|Any CPU
+		{CA76D5E9-BB20-4B97-86DE-D7CAA417797F}.Release|x86.ActiveCfg = Release|Any CPU
+		{CA76D5E9-BB20-4B97-86DE-D7CAA417797F}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{CA76D5E9-BB20-4B97-86DE-D7CAA417797F} = {2F416E46-591A-4554-847A-272586646F68}
+	EndGlobalSection
+EndGlobal
