@@ -8,16 +8,11 @@ module BalanceChecker =
 
     let pairBrackets = List.zip openBrackets closeBrackets |> Map.ofList
 
-    let parseSeq (sequence: string, stack: char ImmutableStack) = 
-        5
+    let filterBrackets str = 
+        str
+        |> Seq.filter (fun x -> (openBrackets |> List.contains x || closeBrackets |> List.contains x))
 
-    // let stack = Stack<char>()
+    let rec parseSeq (str: string, stack: char ImmutableStack) = 
+        match str with 
+        | St
 
-    // let rec parseSeq (sequence, stack: char Stack)= 
-    //     match sequence with
-    //     | ch :: tail when ch |> c List.contains openBrackets -> 
-    //         ch |> stack.Push
-    //         parseSeq tail stack
-    //     | ch :: tail when ch |> c List.contains openBrackets
-
-    // let checkIfBalanced (sequence: #seq<char>) = 

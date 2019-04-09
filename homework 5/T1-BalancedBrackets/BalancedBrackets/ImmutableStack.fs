@@ -7,12 +7,12 @@ type 'a ImmutableStack =
     member this.Push x = 
         Stack(x, this)
 
-    member this.Pop () = 
+    member this.Top () = 
         match this with
         | Empty -> failwith "Underflow"
         | Stack(top, _) -> top
 
-    member this.Top () = 
+    member this.Pop () = 
         match this with
         | Empty -> failwith "Contain no elements"
         | Stack(_, stack) -> stack
