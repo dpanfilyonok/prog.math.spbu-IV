@@ -3,6 +3,7 @@
 module StringCalculationWorkflow =
     open System
     
+    /// Calculation with number in string format
     type CalculateBuilder() = 
         member this.Bind(x, f) = 
             match Int32.TryParse x with
