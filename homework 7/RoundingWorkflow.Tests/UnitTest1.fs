@@ -19,15 +19,6 @@ type TestClass () =
         res |> should (equalWithin 0.001) 0.048
 
     [<Test>]
-    member this.``Division by zero should raise exception`` () =
-        let res () = rounding 3 {
-            let! a = 2.0 / 12.0
-            let! b = 0.
-            return a / b
-        }
-        (fun () -> res () |> ignore) |> should throw typeof<System.DivideByZeroException>
-
-    [<Test>]
     member this.``Calculation with int should be correct`` () =
         let res  = rounding 3 {
             let! a = 1.
