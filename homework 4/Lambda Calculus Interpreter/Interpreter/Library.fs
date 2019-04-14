@@ -8,48 +8,51 @@ module Interpreter =
         | Variable of VarType
         | Application of LambdaTerm * LambdaTerm
         | Abstraction of VarType * LambdaTerm
-
-    let rec getFreeVariables (term: LambdaTerm) = 
-        match term with 
-        | Variable x -> Set.ofList [x]
-        | Application(m, n) -> 
-            Set.union (getFreeVariables m) (getFreeVariables n)
-        | Abstraction(abstrVar, term) -> Set.difference (getFreeVariables term) (Set.ofList [abstrVar])
+    with 
+        member this.FreeVariables = 
+            match this with 
+            | Variable x -> Set.ofList [x]
+            | Application(left, right) -> 
+                (left.FreeVariables |> Set.union) <| right.FreeVariables
+            | Abstraction(abstractionVar, abstractionTerm) -> 
+                (abstractionTerm.FreeVariables |> Set.difference) <| Set.ofList [abstractionVar] 
         
     let rec applyAlphaConversion (term: LambdaTerm) =
         match term with
-        | Abstraction(abstrVar, abstrTerm) -> 
-            let newVar = abstrVar + "'"
-            Abstraction(newVar, applySubstitution abstrTerm abstrVar (Variable newVar))
+        | Abstraction(abstractionVar, abstractionTerm) -> 
+            let newVar = abstractionVar + "`"
+            Abstraction(newVar, applySubstitution abstractionTerm abstractionVar (Variable newVar))
         | _ -> failwith "sss"
     and applySubstitution (target: LambdaTerm) (var: VarType) (source: LambdaTerm) = 
         match target with
         | Variable x when x = var -> source
         | Variable x when x <> var -> target
-        | Application(n, m) -> Application(applySubstitution n var source, applySubstitution m var source)
-        | Abstraction(abstrVar, _) when abstrVar = var -> target
-        | Abstraction(abstrVar, _) when abstrVar <> var ->
+        | Application(n, m) -> 
+            Application(applySubstitution n var source, applySubstitution m var source)
+        | Abstraction(abstractionVar, _) when abstractionVar = var -> target
+        | Abstraction(abstractionVar, _) when abstractionVar <> var ->
             let newTarget = 
-                if getFreeVariables source |> Set.contains abstrVar then applyAlphaConversion target
+                if source.FreeVariables |> Set.contains abstractionVar 
+                    then applyAlphaConversion target
                 else target 
             match newTarget with
-            | Abstraction(abstrVar, abstrTerm) -> Abstraction(abstrVar, applySubstitution abstrTerm var source)
+            | Abstraction(abstractionVar, abstractionTerm) -> 
+                Abstraction(abstractionVar, applySubstitution abstractionTerm var source)
             | _ -> failwith "sss"
         | _ -> failwith "sss"
 
     let applyBetaConversion (abstr: LambdaTerm) (term: LambdaTerm) = 
         match abstr with
-        | Abstraction(abstrVar, abstrTerm) -> applySubstitution abstrTerm abstrVar term
+        | Abstraction(abstractionVar, abstractionTerm) -> 
+            applySubstitution abstractionTerm abstractionVar term
         | _ -> failwith "sss"
 
     let rec reductToNormalForm (term: LambdaTerm) = 
         match term with
         | Variable x -> Variable x
-        | Abstraction(abstrVar, abstrTerm) -> Abstraction(abstrVar, reductToNormalForm abstrTerm)
+        | Abstraction(abstractionVar, abstractionTerm) -> 
+            Abstraction(abstractionVar, reductToNormalForm abstractionTerm)
         | Application(left, right) -> 
             match left with
             | Abstraction _ -> applyBetaConversion left right
             | _ -> Application(reductToNormalForm left, reductToNormalForm right)
-
-
-    
