@@ -20,8 +20,9 @@ module Interpreter =
     let rec applyAlphaConversion (term: LambdaTerm) =
         match term with
         | Abstraction(abstractionVar, abstractionTerm) -> 
-            let newVar = abstractionVar + "`"
-            Abstraction(newVar, applySubstitution abstractionTerm abstractionVar (Variable newVar))
+            "`"
+            |> (+) abstractionVar
+            |> (fun x -> Abstraction(x, applySubstitution abstractionTerm abstractionVar (Variable x)))
         | _ -> failwith "sss"
     and applySubstitution (target: LambdaTerm) (var: VarType) (source: LambdaTerm) = 
         match target with
