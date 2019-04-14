@@ -1,11 +1,10 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
-
   <ItemGroup>
     <Compile Include="Library.fs" />
+    <Compile Include="LambdaCombinators.fs" />
+    <Compile Include="LambdaBooleans.fs" />
   </ItemGroup>
-
 </Project>
