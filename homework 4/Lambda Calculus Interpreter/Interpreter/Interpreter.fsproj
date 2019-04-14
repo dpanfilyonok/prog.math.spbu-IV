@@ -4,7 +4,5 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Library.fs" />
-    <Compile Include="LambdaCombinators.fs" />
-    <Compile Include="LambdaBooleans.fs" />
   </ItemGroup>
 </Project>
