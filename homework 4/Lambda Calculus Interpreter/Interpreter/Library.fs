@@ -29,10 +29,13 @@ module Interpreter =
 
         /// Applies alpha conversion to term
         member this.ApplyAlphaConversion () =
+            let rec makeVariableFree var = 
+                if var |> this.FreeVariables.Contains then makeVariableFree <| var + "`"
+                else var
             match this with
             | Abstraction(abstractionVariable, abstractionTerm) -> 
-                "`"
-                |> (+) abstractionVariable
+                abstractionVariable
+                |> makeVariableFree
                 |> (fun x -> Abstraction(x, abstractionTerm.ApplySubstitution abstractionVariable (Variable x)))
             | _ -> failwith "Term is not lambda abstraction, only them could be alpha reduced"
             
@@ -75,4 +78,3 @@ module Interpreter =
 
     /// Short literal for Variable build
     let v x = Variable x
-    
