@@ -21,10 +21,10 @@ module Interpreter =
         /// String format overriding
         override this.ToString () = 
             match this with 
-            | Variable x -> sprintf "%A" x
-            | Application(left, right) -> sprintf "%A%A" (left.ToString ()) (right.ToString ())
+            | Variable x -> sprintf "%c" x
+            | Application(left, right) -> sprintf "%s%s" (left.ToString ()) (right.ToString ())
             | Abstraction(abstractionVariable, abstractionBody) -> 
-                sprintf "\\%A.%A" (abstractionVariable.ToString ()) (abstractionBody.ToString ())
+                sprintf "\\%s.%s" (abstractionVariable.ToString ()) (abstractionBody.ToString ())
 
         /// Returns set of free variables of term
         member this.FreeVariables = 
