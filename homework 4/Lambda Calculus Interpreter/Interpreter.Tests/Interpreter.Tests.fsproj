@@ -8,6 +8,8 @@
   <ItemGroup>
     <Compile Include="LambdaCombinators.fs" />
     <Compile Include="LambdaBooleans.fs" />
+    <Compile Include="LambdaPairs.fs" />
+    <Compile Include="LambdaArithmetic.fs" />
     <Compile Include="UnitTest.fs" />
   </ItemGroup>
   <ItemGroup>

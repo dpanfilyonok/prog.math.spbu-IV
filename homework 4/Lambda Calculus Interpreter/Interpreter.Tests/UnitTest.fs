@@ -28,4 +28,9 @@ type TestClass () =
         let ki = k |@ i
         reduceToNormalForm ki |> should equal k'
 
+    [<Test>]
+    member this.``Statement that ssssssssual to K with asterisk' should be proved`` () =
+        let term = ('x' ^/ 'x' ^/ &'x') |@ &'y'
+        reduceToNormalForm term |> should equal <| 'x' ^/ &'x'
+
     // проверить комбинатор неподвижной точки

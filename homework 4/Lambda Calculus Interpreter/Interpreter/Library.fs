@@ -4,7 +4,7 @@
 module Interpreter = 
 
     /// Lambda variable type
-    type VarType = string
+    type VarType = char
 
     /// Lambda term
     type LambdaTerm = 
@@ -24,19 +24,29 @@ module Interpreter =
             | Variable x -> Set.ofList [x]
             | Application(left, right) ->   
                 (left.FreeVariables |> Set.union) <| right.FreeVariables
-            | Abstraction(abstractionVariable, abstractionTerm) -> 
-                (abstractionTerm.FreeVariables |> Set.difference) <| Set.ofList [abstractionVariable] 
+            | Abstraction(abstractionVariable, abstractionBody) -> 
+                (abstractionBody.FreeVariables |> Set.difference) <| Set.ofList [abstractionVariable] 
+        
+        /// Returns set of bound variables of term
+        member this.BoundVariables = 
+            match this with
+            | Variable _ -> Set.empty
+            | Application(left, right) ->   
+                (left.BoundVariables |> Set.union) <| right.BoundVariables
+            | Abstraction(abstractionVariable, abstractionBody) -> 
+                (abstractionBody.BoundVariables |> Set.union) <| Set.ofList [abstractionVariable]
 
         /// Applies alpha conversion to term
-        member this.ApplyAlphaConversion () =
-            let rec makeVariableFree var = 
-                if var |> this.FreeVariables.Contains then makeVariableFree <| var + "`"
-                else var
+        member this.ApplyAlphaConversion (except: Set<VarType>) =
+            let variables = ['a' .. 'z'] |> Set.ofList
             match this with
-            | Abstraction(abstractionVariable, abstractionTerm) -> 
-                abstractionVariable
-                |> makeVariableFree
-                |> (fun x -> Abstraction(x, abstractionTerm.ApplySubstitution abstractionVariable (Variable x)))
+            | Abstraction(abstractionVariable, abstractionBody) -> 
+                let avaliableForRanaming = (variables |> Set.difference) <| 
+                                            except |> Set.union abstractionBody.FreeVariables
+                avaliableForRanaming
+                |> Set.maxElement
+                |> (fun x -> 
+                    Abstraction(x, abstractionBody.ApplySubstitution abstractionVariable (Variable x)))
             | _ -> failwith "Term is not lambda abstraction, only them could be alpha reduced"
             
         /// Applies substitution to term 
@@ -45,36 +55,38 @@ module Interpreter =
             | Variable x when x = targetVariable -> sourceTerm
             | Variable x when x <> targetVariable -> this
             | Application(left, right) -> 
-                Application(left.ApplySubstitution targetVariable sourceTerm, right.ApplySubstitution targetVariable sourceTerm)
+                Application(left.ApplySubstitution targetVariable sourceTerm, 
+                            right.ApplySubstitution targetVariable sourceTerm)
             | Abstraction(abstractionVariable, _) when abstractionVariable = targetVariable -> this
             | Abstraction(abstractionVariable, _) when abstractionVariable <> targetVariable ->
                 let alphaReducedTerm = 
                     if sourceTerm.FreeVariables |> Set.contains abstractionVariable 
-                        then this.ApplyAlphaConversion ()
+                        then this.ApplyAlphaConversion (sourceTerm.FreeVariables)
                     else this 
                 match alphaReducedTerm with
-                | Abstraction(abstractionVariable, abstractionTerm) -> 
-                    Abstraction(abstractionVariable, abstractionTerm.ApplySubstitution targetVariable sourceTerm)
+                | Abstraction(abstractionVariable, abstractionBody) -> 
+                    Abstraction(abstractionVariable, 
+                                abstractionBody.ApplySubstitution targetVariable sourceTerm)
                 | _ -> failwith "Term after alpha conversion should be lambda abstraction"
             | _ -> failwith "Something went wrong in term substitution"
 
     /// Performs beta conversion 
     let applyBetaConversion (abstraction: LambdaTerm) (term: LambdaTerm) = 
         match abstraction with
-        | Abstraction(abstractionVariable, abstractionTerm) -> 
-            abstractionTerm.ApplySubstitution abstractionVariable term
+        | Abstraction(abstractionVariable, abstractionBody) -> 
+            abstractionBody.ApplySubstitution abstractionVariable term
         | _ -> failwith "Term is not lambda abstraction, only them could be alpha reduced"
 
     /// Reduce term to normal form
     let rec reduceToNormalForm (term: LambdaTerm) = 
         match term with
         | Variable x -> Variable x
-        | Abstraction(abstractionVariable, abstractionTerm) -> 
-            Abstraction(abstractionVariable, reduceToNormalForm abstractionTerm)
+        | Abstraction(abstractionVariable, abstractionBody) -> 
+            Abstraction(abstractionVariable, reduceToNormalForm abstractionBody)
         | Application(left, right) -> 
             match left with
             | Abstraction _ -> applyBetaConversion left right
             | _ -> Application(reduceToNormalForm left, reduceToNormalForm right)
 
-    /// Short literal for Variable build
-    let v x = Variable x
+    /// Prefix operator for for Variable build
+    let (~&) x = Variable x
