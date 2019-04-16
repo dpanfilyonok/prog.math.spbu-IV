@@ -1,6 +1,6 @@
-namespace Functions
+namespace Utils.Functions
 
-module Pairs = 
+module Pair = 
     let replicate x = x, x
 
     let curry f x y = f (x, y)

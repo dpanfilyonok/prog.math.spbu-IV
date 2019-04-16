@@ -2,9 +2,12 @@
 
 /// Non-typed lambda calculus interpreter
 module Interpreter = 
+    open Utils.Functions
 
     /// Lambda variable type
-    type VarType = char
+    type VarType = string
+
+    let alphabet : VarType list = ['a' .. 'z'] |> List.map string
 
     /// Lambda term
     type LambdaTerm = 
@@ -12,16 +15,10 @@ module Interpreter =
         | Application of LambdaTerm * LambdaTerm
         | Abstraction of VarType * LambdaTerm
     with 
-        /// Abstraction builder
-        static member (^/) (var, term) = Abstraction(var, term)
-
-        /// Application builder
-        static member (|@) (n, m) = Application(n, m)
-
         /// String format overriding
         override this.ToString () = 
             match this with 
-            | Variable x -> sprintf "%c" x
+            | Variable x -> sprintf "%s" x
             | Application(left, right) -> sprintf "(%s%s)" (left.ToString ()) (right.ToString ())
             | Abstraction(abstractionVariable, abstractionBody) -> 
                 sprintf "(\\%s. %s)" (abstractionVariable.ToString ()) (abstractionBody.ToString ())
@@ -46,11 +43,11 @@ module Interpreter =
 
         /// Applies alpha conversion to term
         member this.ApplyAlphaConversion (except: Set<VarType>) =
-            let variables = ['a' .. 'z'] |> Set.ofList
+            let variables = alphabet |> Set.ofList
             match this with
             | Abstraction(abstractionVariable, abstractionBody) -> 
                 let avaliableForRanaming = (variables |> Set.difference) <| 
-                                            except |> Set.union abstractionBody.FreeVariables
+                                            (except |> Set.union abstractionBody.FreeVariables)
                 avaliableForRanaming
                 |> Set.maxElement
                 |> (fun x -> 
@@ -89,17 +86,72 @@ module Interpreter =
     let rec reduceByNormalStrategy (term: LambdaTerm) = 
         match term with
         | Variable x -> Variable x
-        | Abstraction(abstractionVariable, abstractionBody) -> 
-            Abstraction(abstractionVariable, reduceByNormalStrategy abstractionBody)
         | Application(left, right) -> 
             match left with
             | Abstraction _ -> left.ApplyBetaConversion right
             | _ -> Application(reduceByNormalStrategy left, reduceByNormalStrategy right)
+        | Abstraction(abstractionVariable, abstractionBody) -> 
+            Abstraction(abstractionVariable, reduceByNormalStrategy abstractionBody)
     
     /// Reduce term to normal form
     let rec reduceToNormalForm (term: LambdaTerm) = 
+        // сюда бы передавать стратегию редукции ...
         if term = reduceByNormalStrategy term then term
         else reduceToNormalForm <| reduceByNormalStrategy term
 
-    /// Prefix operator for for Variable build
-    let (~&) x = Variable x
+    (* Приоритет операторов зависит от приоритета 1 символа в соответствии с документацией
+       Depending on the exact character sequence you use, your operator will have a certain precedence and associativity. 
+       Associativity can be either left to right or right to left and is used whenever operators of the same level of precedence appear in sequence without parentheses.
+       https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/symbol-and-operator-reference/index#Anchor_1 
+       https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/operator-overloading *)
+
+    /// Abstraction builder
+    let (^/) var term = Abstraction(var, term)
+
+    /// Application builder
+    let (|@) n m = Application(n, m)
+
+    /// Prefix operator for Variable build
+    // let (~&) x = Variable x
+
+    /// Short literal for Variable build
+    let v x = Variable x
+
+    /// Map all variables in term with given function
+    let rec private performMappingOnAllVariablesInTerm (func: VarType -> VarType) (term: LambdaTerm) = 
+        match term with
+        | Variable x -> Variable <| func x
+        | Application(left, right) -> 
+            Application(performMappingOnAllVariablesInTerm func left, 
+                        performMappingOnAllVariablesInTerm func right)
+        | Abstraction(abstractionVariable, abstractionBody) -> 
+            Abstraction(func abstractionVariable, 
+                        performMappingOnAllVariablesInTerm func abstractionBody)
+
+    /// Alpha reduce all abstractions in term
+    let rec private performAlphaConversionOnAllAbstractionsInTerm (term: LambdaTerm) = 
+        match term with
+        | Variable _ -> term
+        | Application(left, right) -> 
+            Application(performAlphaConversionOnAllAbstractionsInTerm left, 
+                        performAlphaConversionOnAllAbstractionsInTerm right)
+        | Abstraction(abstractionVariable, abstractionBody) -> 
+            let newAbstractionBody = performAlphaConversionOnAllAbstractionsInTerm abstractionBody
+            let newAbstraction = Abstraction(abstractionVariable, newAbstractionBody)
+            newAbstraction.ApplyAlphaConversion newAbstractionBody.BoundVariables
+ 
+    /// Check if 2 terms are alpha equivalent
+    let areAlphaEquivalent (termA: LambdaTerm) (termB: LambdaTerm) = 
+        let renameAllVariables = performMappingOnAllVariablesInTerm (fun x -> x + "'")
+        (termA, termB)
+        |> Pair.mapPair renameAllVariables
+        |> Pair.mapPair performAlphaConversionOnAllAbstractionsInTerm
+        |> Pair.uncurry (=)
+
+/// хз начсет альфа конверсии
+/// |> и <| имеют одинаковый приоритет -> нужны скобки
+/// не получается останавливать вычисление если терм не редуцируется
+/// refactor
+/// абстагироваться можно лишь по связным переменным
+/// хз что делать с & vs v
+/// где объявлять операторы

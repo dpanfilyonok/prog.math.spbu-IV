@@ -16,7 +16,7 @@ type TestClass () =
     [<Test>]
     member this.``Statement that 'S(KS)K is beta equal to B' should be proved`` () =
         let sksk = s |@ (k |@ s) |@ k
-        reduceToNormalForm sksk |> should equal b
+        reduceToNormalForm sksk |> areAlphaEquivalent b |> should be True
 
     [<Test>]
     member this.``Statement that 'II is beta equal to I' should be proved`` () =
@@ -26,11 +26,11 @@ type TestClass () =
     [<Test>]
     member this.``Statement that 'KI is beta equal to K with asterisk' should be proved`` () =
         let ki = k |@ i
-        reduceToNormalForm ki |> should equal k'
+        reduceToNormalForm ki |> areAlphaEquivalent k' |> should be True
 
     [<Test>]
     member this.``Statement that ssssssssual to K with asterisk' should be proved`` () =
-        let term = ('x' ^/ 'x' ^/ &'x') |@ &'y'
-        reduceToNormalForm term |> should equal <| 'x' ^/ &'x'
+        let term = ("x" ^/ "x" ^/ v"x") |@ v"y"
+        reduceToNormalForm term |> should equal <| "x" ^/ v"x"
 
     // проверить комбинатор неподвижной точки
