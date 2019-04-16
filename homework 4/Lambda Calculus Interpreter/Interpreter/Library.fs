@@ -22,9 +22,9 @@ module Interpreter =
         override this.ToString () = 
             match this with 
             | Variable x -> sprintf "%c" x
-            | Application(left, right) -> sprintf "%s%s" (left.ToString ()) (right.ToString ())
+            | Application(left, right) -> sprintf "(%s%s)" (left.ToString ()) (right.ToString ())
             | Abstraction(abstractionVariable, abstractionBody) -> 
-                sprintf "\\%s.%s" (abstractionVariable.ToString ()) (abstractionBody.ToString ())
+                sprintf "(\\%s. %s)" (abstractionVariable.ToString ()) (abstractionBody.ToString ())
 
         /// Returns set of free variables of term
         member this.FreeVariables = 
@@ -56,6 +56,13 @@ module Interpreter =
                 |> (fun x -> 
                     Abstraction(x, abstractionBody.ApplySubstitution abstractionVariable (Variable x)))
             | _ -> failwith "Term is not lambda abstraction, only them could be alpha reduced"
+         
+        /// Performs beta conversion 
+        member this.ApplyBetaConversion (term: LambdaTerm) = 
+            match this with
+            | Abstraction(abstractionVariable, abstractionBody) -> 
+                abstractionBody.ApplySubstitution abstractionVariable term
+            | _ -> failwith "Term is not lambda abstraction, only them could be alpha reduced"
             
         /// Applies substitution to term 
         member this.ApplySubstitution (targetVariable: VarType) (sourceTerm: LambdaTerm) = 
@@ -69,7 +76,7 @@ module Interpreter =
             | Abstraction(abstractionVariable, _) when abstractionVariable <> targetVariable ->
                 let alphaReducedTerm = 
                     if sourceTerm.FreeVariables |> Set.contains abstractionVariable 
-                        then this.ApplyAlphaConversion (sourceTerm.FreeVariables)
+                        then this.ApplyAlphaConversion sourceTerm.FreeVariables
                     else this 
                 match alphaReducedTerm with
                 | Abstraction(abstractionVariable, abstractionBody) -> 
@@ -78,23 +85,21 @@ module Interpreter =
                 | _ -> failwith "Term after alpha conversion should be lambda abstraction"
             | _ -> failwith "Something went wrong in term substitution"
 
-    /// Performs beta conversion 
-    let applyBetaConversion (abstraction: LambdaTerm) (term: LambdaTerm) = 
-        match abstraction with
-        | Abstraction(abstractionVariable, abstractionBody) -> 
-            abstractionBody.ApplySubstitution abstractionVariable term
-        | _ -> failwith "Term is not lambda abstraction, only them could be alpha reduced"
-
-    /// Reduce term to normal form
-    let rec reduceToNormalForm (term: LambdaTerm) = 
+    /// Define and apply operation semantic of reduction by normal strategy
+    let rec reduceByNormalStrategy (term: LambdaTerm) = 
         match term with
         | Variable x -> Variable x
         | Abstraction(abstractionVariable, abstractionBody) -> 
-            Abstraction(abstractionVariable, reduceToNormalForm abstractionBody)
+            Abstraction(abstractionVariable, reduceByNormalStrategy abstractionBody)
         | Application(left, right) -> 
             match left with
-            | Abstraction _ -> applyBetaConversion left right
-            | _ -> Application(reduceToNormalForm left, reduceToNormalForm right)
+            | Abstraction _ -> left.ApplyBetaConversion right
+            | _ -> Application(reduceByNormalStrategy left, reduceByNormalStrategy right)
+    
+    /// Reduce term to normal form
+    let rec reduceToNormalForm (term: LambdaTerm) = 
+        if term = reduceByNormalStrategy term then term
+        else reduceToNormalForm <| reduceByNormalStrategy term
 
     /// Prefix operator for for Variable build
     let (~&) x = Variable x
