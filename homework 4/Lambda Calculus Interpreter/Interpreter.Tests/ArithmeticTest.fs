@@ -45,3 +45,4 @@ type ArithmeticTestClass () =
     //     let six = mult |@ two |@ three
     //     let fac = y |@ fac'
     //     fac |@ three |> reduceToNormalForm |> should equal <| six
+    

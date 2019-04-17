@@ -100,12 +100,6 @@ module Interpreter =
         if term = reduceByNormalStrategy term then term
         else reduceToNormalForm <| reduceByNormalStrategy term
 
-    (* Приоритет операторов зависит от приоритета 1 символа в соответствии с документацией
-       Depending on the exact character sequence you use, your operator will have a certain precedence and associativity. 
-       Associativity can be either left to right or right to left and is used whenever operators of the same level of precedence appear in sequence without parentheses.
-       https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/symbol-and-operator-reference/index#Anchor_1 
-       https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/operator-overloading *)
-
     /// Abstraction builder
     let (^/) var term = Abstraction(var, term)
 
@@ -148,11 +142,4 @@ module Interpreter =
         |> Pair.mapPair renameAllVariables
         |> Pair.mapPair performAlphaConversionOnAllAbstractionsInTerm
         |> Pair.uncurry (=)
-
-/// хз начсет альфа конверсии
-/// |> и <| имеют одинаковый приоритет -> нужны скобки
-/// не получается останавливать вычисление если терм не редуцируется
-/// refactor
-/// абстагироваться можно лишь по связным переменным
-/// хз что делать с & vs v
-/// где объявлять операторы
+        

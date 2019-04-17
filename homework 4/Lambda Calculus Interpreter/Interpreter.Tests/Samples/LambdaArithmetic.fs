@@ -25,3 +25,4 @@ module LambdaArithmetic =
     let fac' = "f" ^/ "n" ^/ (iif |@ (iszro |@ v"n") 
                                 |@ one 
                                 |@ (mult |@ v"n" |@ (v"f" |@ (pred |@ v"n"))))
+                                

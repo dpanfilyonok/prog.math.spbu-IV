@@ -5,4 +5,4 @@ open LambdaCalculus.Interpreter
 let main argv =
     areAlphaEquivalent (v"x" |@ v"y") (v"y" |@ v"x") 
     |> printfn "%b" 
-    0 // return an integer exit code
+    0 

@@ -42,3 +42,4 @@ type BooleansTestClass () =
     member this.``not tru 'should be' fls`` () =
         let term = not' |@ tru
         term |> reduceToNormalForm |> should equal <| fls
+        

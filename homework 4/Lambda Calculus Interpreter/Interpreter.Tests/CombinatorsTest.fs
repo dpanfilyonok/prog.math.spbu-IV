@@ -37,5 +37,4 @@ type CombinatorsTestClass () =
     member this.``(\xx.x)y 'shouuld be' \x.x`` () = 
         let term = ("x" ^/ "x" ^/ v"x") |@ v"y"
         term |> reduceToNormalForm |> should equal <| "x" ^/ v"x"
-
-    
+        

@@ -17,3 +17,4 @@ type PairsTestClass () =
     member this.``snd (pair a b) 'should be' b`` () =
         let term = snd' |@ (pair |@ v"a" |@ v"b")
         term |> reduceToNormalForm |> should equal <| v"b"
+        
