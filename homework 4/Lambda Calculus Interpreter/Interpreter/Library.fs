@@ -7,6 +7,7 @@ module Interpreter =
     /// Lambda variable type
     type VarType = string
 
+    /// List of available literals for use as variables
     let alphabet : VarType list = ['a' .. 'z'] |> List.map string
 
     /// Lambda term

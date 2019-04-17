@@ -6,11 +6,14 @@
     <ProjectReference Include="..\Interpreter\Interpreter.fsproj" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="LambdaCombinators.fs" />
-    <Compile Include="LambdaBooleans.fs" />
-    <Compile Include="LambdaPairs.fs" />
-    <Compile Include="LambdaArithmetic.fs" />
-    <Compile Include="UnitTest.fs" />
+    <Compile Include="Samples/LambdaCombinators.fs" />
+    <Compile Include="Samples/LambdaBooleans.fs" />
+    <Compile Include="Samples/LambdaPairs.fs" />
+    <Compile Include="Samples/LambdaArithmetic.fs" />
+    <Compile Include="CombinatorsTest.fs" />
+    <Compile Include="BooleansTest.fs" />
+    <Compile Include="PairsTest.fs" />
+    <Compile Include="ArithmeticTest.fs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="FsUnit" Version="3.4.0" />
