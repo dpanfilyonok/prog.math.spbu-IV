@@ -1,14 +1,16 @@
 namespace Tests
 
 open NUnit.Framework
+open FsUnit
+open Task1.AlternatingSequence
 
-[<TestClass>]
+[<TestFixture>]
 type TestClass () =
 
-    [<SetUp>]
-    member this.Setup () =
-        ()
+    [<Test>]
+    member this.``First value should be 1`` () =
+        alternatingNumberSequence |> Seq.take 1 |> Seq.toList |> should equal [1]
 
     [<Test>]
-    member this.Test1 () =
-        Assert.Pass()
+    member this.``Smoke test with first 6`` () =
+        alternatingNumberSequence |> Seq.take 6 |> Seq.toList |> should equal [1; -2; 3; -4; 5; -6]
