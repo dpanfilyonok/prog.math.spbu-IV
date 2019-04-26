@@ -1,14 +1,12 @@
 namespace Tests
 
 open NUnit.Framework
+open FsUnit
+open Task2.MaxPalindrome
 
-[<TestClass>]
+[<TestFixture>]
 type TestClass () =
 
-    [<SetUp>]
-    member this.Setup () =
-        ()
-
     [<Test>]
-    member this.Test1 () =
-        Assert.Pass()
+    member this.``Max palindrome should be 906609`` () =
+        maxThreeDigitPalindrome () |> should equal 906609
