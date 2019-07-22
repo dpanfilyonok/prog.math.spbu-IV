@@ -1,0 +1,23 @@
+\documentclass{article}
+
+\usepackage{amsmath}
+
+\title{Task 2. Combinator Reduction}
+\author{Dmitriy Panfilyonok}
+\date{}
+
+\begin{document}
+    \pagenumbering{gobble}
+    \maketitle
+    
+    \paragraph{}
+    \begin{align*}
+        SKK & = (\lambda fgx.fx(gx))(\lambda xy.x)(\lambda xy.x) \\
+        & \rightarrow_\beta (\lambda gx.(\lambda xy.x)x(gx))(\lambda xy.x) \\
+        & \rightarrow_\beta (\lambda gx.(\lambda y.x)(gx))(\lambda xy.x) \\
+        & \rightarrow_\beta (\lambda gx.x)(\lambda xy.x) \\
+        & \rightarrow_\beta \lambda x.x \\ 
+        & = I
+    \end{align*}
+    
+\end{document}
