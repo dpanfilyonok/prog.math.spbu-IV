@@ -8,12 +8,21 @@ trigger:
 
 strategy:
   matrix:
+    utils:
+      sln_path: ./Utils/Utils.sln
+      hw_name: Utils
     hw1: 
       sln_path: ./homework\ 1/homework\ 1.sln
       hw_name: Homework 1
+    hw2:
+      sln_path: ./homework\ 2/homework\ 2.sln
+      hw_name: Homework 2
     hw3:
       sln_path: ./homework\ 3/homework\ 3.sln
       hw_name: Homework 3
+    hw7: 
+      sln_path: ./homework\ 7/homework\ 7.sln
+      hw_name: Homework 7
 
 pool:
   vmImage: 'Ubuntu-16.04'
