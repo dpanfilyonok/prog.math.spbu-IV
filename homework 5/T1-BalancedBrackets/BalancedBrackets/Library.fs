@@ -12,7 +12,7 @@ module BalanceChecker =
         str
         |> Seq.filter (fun x -> (openBrackets |> List.contains x || closeBrackets |> List.contains x))
 
-    let rec parseSeq (str: string, stack: char ImmutableStack) = 
-        match str with 
-        | St
+    let rec parseSeq (sequence: char seq, stack: char ImmutableStack) = 
+        match sequence with 
+        | 
 
