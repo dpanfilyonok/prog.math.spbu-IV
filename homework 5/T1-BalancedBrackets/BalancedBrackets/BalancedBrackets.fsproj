@@ -6,4 +6,7 @@
     <Compile Include="ImmutableStack.fs" />
     <Compile Include="Library.fs" />
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="FSharpx.Collections" Version="2.0.0" />
+  </ItemGroup>
 </Project>
