@@ -26,6 +26,9 @@ strategy:
     hw4:
       sln_path: ./homework\ 4/Lambda\ Calculus\ Interpreter/Lambda\ Calculus\ Interpreter.sln 
       hw_name: Homework 4 (Lambda Calculus Interpreter)
+    hw5:
+      sln_path: ./homework\ 5/homework\ 5.sln
+      hw_name: Homework 5
     hw7: 
       sln_path: ./homework\ 7/homework\ 7.sln
       hw_name: Homework 7
