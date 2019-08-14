@@ -1,0 +1,8 @@
+/// |> и <| имеют одинаковый приоритет -> нужны скобки
+/// абстагироваться можно лишь по связным переменным :)
+
+(* Приоритет операторов зависит от приоритета 1 символа в соответствии с документацией
+   Depending on the exact character sequence you use, your operator will have a certain precedence and associativity. 
+   Associativity can be either left to right or right to left and is used whenever operators of the same level of precedence appear in sequence without parentheses.
+   https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/symbol-and-operator-reference/index#Anchor_1 
+   https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/operator-overloading *)

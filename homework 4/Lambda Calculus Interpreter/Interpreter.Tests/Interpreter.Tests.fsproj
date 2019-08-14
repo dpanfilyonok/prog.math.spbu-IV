@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Interpreter\Interpreter.fsproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Samples/LambdaCombinators.fs" />
+    <Compile Include="Samples/LambdaBooleans.fs" />
+    <Compile Include="Samples/LambdaPairs.fs" />
+    <Compile Include="Samples/LambdaArithmetic.fs" />
+    <Compile Include="CombinatorsTest.fs" />
+    <Compile Include="BooleansTest.fs" />
+    <Compile Include="PairsTest.fs" />
+    <Compile Include="ArithmeticTest.fs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="FsUnit" Version="3.4.0" />
+    <PackageReference Include="nunit" Version="3.11.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.11.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />
+  </ItemGroup>
+</Project>

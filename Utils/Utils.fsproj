@@ -3,7 +3,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Functions/Pairs.fs" />
+    <Compile Include="Functions/Pair.fs" />
     <Compile Include="Functions/Combinators.fs" />
   </ItemGroup>
 </Project>
