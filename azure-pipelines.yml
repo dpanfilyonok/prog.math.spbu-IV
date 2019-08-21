@@ -11,7 +11,7 @@ stages:
     jobs:
       - job: 
         steps:
-          - bash: apt-get update; apt-get install fsharp
+          - bash: sudo apt install -y fsharp
 
 # strategy:
 #   matrix:
