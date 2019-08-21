@@ -49,7 +49,8 @@ stages:
         #   hw_name: Homework 7
         # ; dotnet build --configuration $(buildConfiguration) $(sln_path)
     steps:
-    - script: which fsharpc
-      displayName: 'dotnet build $(hw_name)'
-    - script: dotnet test --configuration $(buildConfiguration) $(sln_path)
-      displayName: 'dotnet test $(hw_name)'
+    - bash: which fsharpc
+    # - script: 
+    #   displayName: 'dotnet build $(hw_name)'
+    # - script: dotnet test --configuration $(buildConfiguration) $(sln_path)
+    #   displayName: 'dotnet test $(hw_name)'
