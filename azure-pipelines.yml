@@ -19,6 +19,8 @@ stages:
   dependsOn: BeforeBuild
   jobs:
   - job: 
+    pool:
+      vmImage: 'Ubuntu-16.04'
     variables:
       buildConfiguration: 'Release'
     strategy:
