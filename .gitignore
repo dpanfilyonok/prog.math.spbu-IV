@@ -20,7 +20,9 @@ bin
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
-.ionide/*
+
+# Ionide (cross platform F# VS Code tools) working folder
+.ionide/
 
 ### VisualStudioCode Patch ###
 # Ignore all local history of files
