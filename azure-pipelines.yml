@@ -94,7 +94,8 @@ steps:
 - script: |
     sudo apt install -y fsharp
     which fsharpc
-    dotnet build --configuration $(buildConfiguration) $(sln_path)
+  displayName: install fsharp
+- script: dotnet build --configuration $(buildConfiguration) $(sln_path)
   displayName: 'dotnet build $(hw_name)'
-# - script: dotnet test --configuration $(buildConfiguration) $(sln_path)
-#   displayName: 'dotnet test $(hw_name)'
+- script: dotnet test --configuration $(buildConfiguration) $(sln_path)
+  displayName: 'dotnet test $(hw_name)'
