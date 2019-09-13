@@ -1,5 +1,6 @@
 ﻿namespace LocalNetwork
 
+/// Main module
 module Main = 
     open System
     open DefaultOS

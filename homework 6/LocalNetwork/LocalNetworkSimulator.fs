@@ -2,6 +2,7 @@ namespace LocalNetwork
 
 open System
 
+/// Simulator of local network with infection in it
 type LocalNetworkSimulator(computers: Computer array, network: int list list) = 
     let c f x y = f y x
     let doStep (previousState: Computer array) = 
@@ -23,18 +24,21 @@ type LocalNetworkSimulator(computers: Computer array, network: int list list) =
             ) network
         newState
 
-    let logState stepIndex (currentState: Computer array) = 
+    let logState stepIndex (state: Computer array) = 
         printfn "Step #%i" stepIndex
         List.iteri 
             (fun index item -> 
-                printfn "Node %i: %c" index (if currentState.[index].IsInfected then '\u2717' else '\u2713')
-                List.iter 
+                printfn "Node %i: %c" index (if state.[index].IsInfected then '\u2717' else '\u2713')
+                item
+                |> List.iter 
                     (fun adjacentIndex -> 
-                        printfn "%i - %O" adjacentIndex currentState.[adjacentIndex]
-                    ) item
+                        printfn "%i - %O" adjacentIndex state.[adjacentIndex])
             ) network
         printf "\n"
 
+    /// Begins simulation with a given count of iteration
+    /// Simulation will stop when either all iteration will end or all computers in network will be infected
+    /// Returns true if all computers were infected, false otherwise
     member this.Start iterationCount = 
         let rec loop remainingSteps currentState = 
             if remainingSteps = 0 || currentState |> Seq.forall (fun (node: Computer) -> node.IsInfected) then

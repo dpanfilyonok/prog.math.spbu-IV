@@ -6,7 +6,7 @@ open LocalNetwork
 open LocalNetwork.DefaultOS
 
 [<TestFixture>]
-type TestClass () =
+type LocalNetworkSimulatorTestClass () =
 
     let nonInfectiousOS = {
         new IOperationSystem with 
@@ -28,21 +28,6 @@ type TestClass () =
             [0; 2; 3]
             [0; 1; 3]
             [0; 1; 2]
-        ]
-        LocalNetworkSimulator(computers, network).Start 10 |> should be False
-
-    [<Test>]
-    member this.``[N-n-w] should not be infected`` () =
-        let computers = 
-            [|
-                Computer(nonInfectiousOS, true);
-                Computer(nonInfectiousOS);
-                Computer(windowsOS)
-            |]
-        let network = [
-            [1]
-            [0; 2]
-            [1]
         ]
         LocalNetworkSimulator(computers, network).Start 10 |> should be False
 
@@ -91,6 +76,21 @@ type TestClass () =
             [0; 1; 3; 5]
         ]
         LocalNetworkSimulator(computers, network).Start 2 |> should be False
+
+    [<Test>]
+    member this.``[N-n-w] should not be infected`` () =
+        let computers = 
+            [|
+                Computer(nonInfectiousOS, true);
+                Computer(nonInfectiousOS);
+                Computer(windowsOS)
+            |]
+        let network = [
+            [1]
+            [0; 2]
+            [1]
+        ]
+        LocalNetworkSimulator(computers, network).Start 10 |> should be False
 
     [<Test>]
     member this.``[C-c n] should not be infected`` () =
