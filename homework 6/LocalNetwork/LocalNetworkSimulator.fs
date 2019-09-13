@@ -39,8 +39,8 @@ type LocalNetworkSimulator(computers: Computer array, network: int list list) =
         let rec loop remainingSteps currentState = 
             if remainingSteps = 0 || currentState |> Seq.forall (fun (node: Computer) -> node.IsInfected) then
                 logState (iterationCount - remainingSteps) currentState 
-                printfn "Are all nodes infected : %b" <|
-                    Seq.forall (fun (node: Computer) -> node.IsInfected) currentState
+                let allInfected = Seq.forall (fun (node: Computer) -> node.IsInfected) currentState
+                allInfected
             else 
                 logState (iterationCount - remainingSteps) currentState
                 doStep currentState |> loop (remainingSteps - 1)

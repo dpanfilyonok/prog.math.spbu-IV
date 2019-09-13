@@ -27,5 +27,6 @@ module Main =
             [0; 1; 3; 5]
         ]
 
-        LocalNetworkSimulator(computers, network).Start 10
+        printfn "Are all nodes infected : %b" <|        
+            LocalNetworkSimulator(computers, network).Start 10 
         0
