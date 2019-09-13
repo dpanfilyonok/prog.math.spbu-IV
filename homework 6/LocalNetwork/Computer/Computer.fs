@@ -17,7 +17,10 @@ type Computer(os: IOperationSystem, isInfected: bool) =
         and set isInfected = mutableIsInfected <- isInfected
 
     override this.ToString() =
-        let basicString = sprintf "%s, %.2f" this.OS this.InfectionProbability
-        if this.IsInfected 
-            then sprintf "[[%s]]" basicString
-        else basicString
+        sprintf "(%c) %s, %.2f" 
+            (if this.IsInfected then '\u2717' else '\u2713') 
+            this.OS 
+            this.InfectionProbability
+
+    member this.ShallowCopy () = 
+        Computer(os, this.IsInfected)

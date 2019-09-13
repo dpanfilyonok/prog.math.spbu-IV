@@ -5,9 +5,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Computer/IOperationSystem.fs" />
-    <Compile Include="Computer/LinuxOS.fs" />
-    <Compile Include="Computer/WindowsOS.fs" />
-    <Compile Include="Computer/MacOS.fs" />
+    <Compile Include="Computer/DefaultOS.fs" />
     <Compile Include="Computer/Computer.fs" />
     <Compile Include="LocalNetworkSimulator.fs" />
     <Compile Include="Program.fs" />

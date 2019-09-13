@@ -5,44 +5,43 @@ open System
 type LocalNetworkSimulator(computers: Computer array, network: int list list) = 
     let c f x y = f y x
     let doStep (previousState: Computer array) = 
-        let mutable newState = previousState
+        let random = Random()
+        let newState = [| for node in previousState -> node.ShallowCopy () |]
+
         List.iteri 
             (fun index item -> 
                 if previousState.[index].IsInfected then ()
                 else
-                    let rnd = Random()
                     item
                     |> List.map (fun adjacentIndex -> previousState.[adjacentIndex].IsInfected)
                     |> Seq.sumBy (function  | true -> 1 
                                             | false -> 0)
-                    |> c Seq.init (fun _ -> rnd.NextDouble ())
+                    |> c Seq.init (fun _ -> random.NextDouble ())
                     |> Seq.forall (fun randomValue -> randomValue > computers.[index].InfectionProbability)
                     |> (function    | false -> newState.[index].IsInfected <- true 
-                                    | true -> ())  
+                                    | true -> ())
             ) network
         newState
 
-    let logStep (stepIndex: int) (currentState: Computer array) = 
+    let logState stepIndex (currentState: Computer array) = 
         printfn "Step #%i" stepIndex
         List.iteri 
             (fun index item -> 
-                if currentState.[index].IsInfected then ()
-                else
-                    printfn "%i: " index
-                    List.iter (fun x -> printfn "\t%O" currentState.[index]) item
+                printfn "Node %i: %c" index (if currentState.[index].IsInfected then '\u2717' else '\u2713')
+                List.iter 
+                    (fun adjacentIndex -> 
+                        printfn "%i - %O" adjacentIndex currentState.[adjacentIndex]
+                    ) item
             ) network
         printf "\n"
 
-    member this.Start (iterationCount: int) = 
-        let rec loop remainingStepsCount (state: Computer array) = 
-            if (remainingStepsCount = 0) then
-                let a = Seq.forall (fun (x: Computer) -> x.IsInfected) state
-                printfn "%b" a
+    member this.Start iterationCount = 
+        let rec loop remainingSteps currentState = 
+            if remainingSteps = 0 || currentState |> Seq.forall (fun (node: Computer) -> node.IsInfected) then
+                logState (iterationCount - remainingSteps) currentState 
+                printfn "Are all nodes infected : %b" <|
+                    Seq.forall (fun (node: Computer) -> node.IsInfected) currentState
             else 
-                let newState = doStep state
-                logStep (iterationCount - remainingStepsCount + 1) newState
-                loop (remainingStepsCount - 1) newState
-        loop iterationCount computers
-
-// || (state |> Seq.forall (fun x -> x.IsInfected))
-    
+                logState (iterationCount - remainingSteps) currentState
+                doStep currentState |> loop (remainingSteps - 1)
+        loop iterationCount computers    
