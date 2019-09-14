@@ -15,12 +15,10 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\Utils\Utils.fsproj" />
   </ItemGroup>
-
   <PropertyGroup>
     <FscToolPath>/usr/bin</FscToolPath>
     <FscToolExe>fsharpc</FscToolExe>
     <DisableAutoSetFscCompilerPath>true</DisableAutoSetFscCompilerPath>
     <DotnetFscCompilerPath></DotnetFscCompilerPath>
   </PropertyGroup>    
-
 </Project>
