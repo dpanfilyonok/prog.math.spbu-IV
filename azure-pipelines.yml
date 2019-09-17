@@ -40,12 +40,13 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
+- script: |
+   sudo apt install -y fsharp
+   which fsharpc
+  displayName: Install FSharp
 - script: dotnet build --configuration $(buildConfiguration) $(sln_path)
   displayName: 'Build $(hw_name)'
 - script: dotnet test --configuration $(buildConfiguration) $(sln_path)
   displayName: 'Test $(hw_name)'
 
-#- script: |
-#    sudo apt install -y fsharp
-#    which fsharpc
-#  displayName: Install FSharp
+
