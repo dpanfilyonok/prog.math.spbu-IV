@@ -7,7 +7,7 @@ type OneThreadLazy<'a>(supplier: unit -> 'a) =
     interface ILazy<'a> with 
         member this.Get () = 
             match result with 
+            | Some value -> value
             | None -> 
                 result <- Some <| supplier ()
                 result.Value
-            | Some value -> value

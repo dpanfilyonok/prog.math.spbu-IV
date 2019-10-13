@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <OutputType>Exe</OutputType>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="ILazy.fs" />
@@ -8,5 +9,6 @@
     <Compile Include="MultiThreadLazy.fs" />
     <Compile Include="LockFreeLazy.fs" />
     <Compile Include="LazyFactory.fs" />
+    <Compile Include="Main.fs" />
   </ItemGroup>
 </Project>
