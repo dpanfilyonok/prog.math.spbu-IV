@@ -29,7 +29,7 @@ strategy:
     hw7: 
       sln_path: ./homework\ 7/homework\ 7.sln
       hw_name: Homework 7
-    hw7: 
+    hw8: 
       sln_path: ./homework\ 8/homework\ 8.sln
       hw_name: Homework 8
 
