@@ -11,5 +11,8 @@ type LockFreeLazy<'a>(supplier: unit -> 'a) =
             match result with
             | Some value -> value
             | None -> 
-                Interlocked.CompareExchange(ref result, Some <| supplier (), None) |> ignore
-                result.Value
+                let newValue = supplier ()
+                Interlocked.CompareExchange(ref result, Some newValue, None) |> ignore
+                match result with 
+                | Some value -> value
+                | None -> newValue
