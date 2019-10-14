@@ -7,6 +7,7 @@ module Main =
     open System.Text.RegularExpressions
     open Utils.Functions
 
+    /// Builds async, that returns page content of a given url
     let getContenAsync (url: string) = 
         async {
             try
@@ -20,6 +21,7 @@ module Main =
             | _ -> return None
         }
 
+    /// Returns http and https links from html page (using regex)
     let getLinksFromHtml page = 
         let pattern = "href\\s*=\\s*(?:[\"'](?<1>[^\"']*)[\"']|(?<1>\\S+))"
         let regex = Regex(pattern, RegexOptions.IgnoreCase) 
@@ -35,6 +37,7 @@ module Main =
                 (uri.Scheme = Uri.UriSchemeHttp || uri.Scheme = Uri.UriSchemeHttps)
             )
 
+    /// Prints content length of all nested pages
     [<EntryPoint>]
     let main argv = 
         let startUri = "https://stackoverflow.com/"
