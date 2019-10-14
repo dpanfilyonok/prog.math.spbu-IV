@@ -1,40 +1,66 @@
 ﻿namespace WebDownloader
 
-module Name = 
+module Main = 
     open System
     open System.IO
     open System.Net
     open System.Text.RegularExpressions
+    open Utils.Functions
 
-    let download (url: string) = 
+    let getContenAsync (url: string) = 
         async {
-            // try
-                let request = WebRequest.Create url :?> HttpWebRequest
+            try
+                let request = WebRequest.Create url
                 let! response = request.AsyncGetResponse () 
-                use httpResponse = response :?> HttpWebResponse
-                use stream = httpResponse.GetResponseStream ()
+                use stream = response.GetResponseStream ()
                 use reader = new StreamReader(stream)
                 let content = reader.ReadToEnd ()
-
-                return content
-            // with 
-            // | :? WebException e -> ...
+                return Some content   
+            with 
+            | _ -> return None
         }
 
-    let searchLinksInHtml page = 
-        let pattern = "<a\s[^>]*href=(\"??)([^\" >]*?)\\1[^>]*>(.*)<\/a>"
+    let getLinksFromHtml page = 
+        let pattern = "href\\s*=\\s*(?:[\"'](?<1>[^\"']*)[\"']|(?<1>\\S+))"
         let regex = Regex(pattern, RegexOptions.IgnoreCase) 
-        let matches = regex.Matches page
-        matches
+        let uri = Uri "https://www.google.ru/"
+
+        page
+        |> regex.Matches 
+        |> (fun (matches: MatchCollection) -> seq {for i in matches -> i.Groups.[1].Value})
+        |> Seq.distinct
+        |> Seq.filter 
+            (fun string -> 
+                Uri.TryCreate (string, UriKind.Absolute, ref uri) && 
+                (uri.Scheme = Uri.UriSchemeHttp || uri.Scheme = Uri.UriSchemeHttps)
+            )
 
     [<EntryPoint>]
-    let main argv =
-        let uri = Uri
-        "https://stackoverflow.com/questions/499345/regular-expression-to-extract-url-from-an-html-link"
-        |> download
-        |> Async.RunSynchronously
-        |> searchLinksInHtml
-        |> (fun (x: MatchCollection) -> seq {for i in x -> i.Groups.[0].Value})
-        |> Seq.distinct
-        |> Seq.iter (fun x -> printfn "%s" x)
+    let main argv = 
+        let startUri = "https://stackoverflow.com/"
+        let content = 
+            startUri
+            |> getContenAsync
+            |> Async.RunSynchronously
+
+        if content.IsNone then
+            printfn "Page %s isn`t accessible" startUri
+        else 
+            content.Value
+            |> getLinksFromHtml
+            |> Pair.replicate
+            |> Pair.mapSnd (Seq.map getContenAsync)
+            |> Pair.mapSnd Async.Parallel
+            |> Pair.mapSnd Async.RunSynchronously
+            |> Pair.mapSnd Seq.ofArray
+            |> Pair.uncurry Seq.zip
+            |> Seq.choose 
+                (fun (uri, contentOpt) -> 
+                    match contentOpt with 
+                    | None -> None 
+                    | Some content -> Some (uri, content)
+                )
+            |> Seq.map (fun (uri, content) -> (uri, String.length content))
+            |> Seq.iter (fun (uri, length) -> printfn "%s --- %i" uri length)
+
         0 
