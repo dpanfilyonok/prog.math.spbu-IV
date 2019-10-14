@@ -3,6 +3,7 @@ namespace Tests
 open NUnit.Framework
 open FsUnit
 open Lazy
+open System.Threading.Tasks
 open System.Threading
 
 [<TestFixture>]
@@ -12,12 +13,8 @@ type LockFreeLazyTestClass () =
     [<Test>]
     member this.``Get should return the same object`` () =
         let lazyCalc = LazyFactory.createLockFreeLazy (fun () -> obj ())
-        let expected = lazyCalc.Get ()
+        let expected =  lazyCalc.Get ()
 
-        [1 .. threadCount]
-        |> List.iter 
-            (fun _ ->
-                (fun _ -> lazyCalc.Get () |> should equal expected) 
-                |> ThreadPool.QueueUserWorkItem 
-                |> ignore
-            )
+        let tasks = Array.init threadCount 
+                        (fun _ -> Task.Factory.StartNew (lazyCalc.Get >> should equal expected))
+        Task.WaitAll tasks

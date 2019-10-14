@@ -8,7 +8,7 @@ module Main =
     open Utils.Functions
 
     /// Builds async, that returns page content of a given url
-    let getContenAsync (url: string) = 
+    let getContentAsync (url: string) = 
         async {
             try
                 let request = WebRequest.Create url
@@ -43,7 +43,7 @@ module Main =
         let startUri = "https://stackoverflow.com/"
         let content = 
             startUri
-            |> getContenAsync
+            |> getContentAsync
             |> Async.RunSynchronously
 
         if content.IsNone then
@@ -52,7 +52,7 @@ module Main =
             content.Value
             |> getLinksFromHtml
             |> Pair.replicate
-            |> Pair.mapSnd (Seq.map getContenAsync)
+            |> Pair.mapSnd (Seq.map getContentAsync)
             |> Pair.mapSnd Async.Parallel
             |> Pair.mapSnd Async.RunSynchronously
             |> Pair.mapSnd Seq.ofArray

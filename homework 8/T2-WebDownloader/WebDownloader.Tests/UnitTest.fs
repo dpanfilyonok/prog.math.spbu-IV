@@ -10,6 +10,6 @@ type WebDownloaderTestClass () =
     [<Test>]
     member this.``Getting content from invalid url should return None`` () =
         "InvalidSchema"
-        |> getContenAsync
+        |> getContentAsync
         |> Async.RunSynchronously
         |> should equal None 
