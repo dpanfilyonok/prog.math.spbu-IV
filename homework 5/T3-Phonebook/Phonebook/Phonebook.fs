@@ -1,50 +1,33 @@
 namespace Phonebook
+open System.Runtime.Serialization.Formatters.Binary
 
 module Logic = 
-    open FSharp.Data.Sql
-
-    exception RecordException of string
-
-    [<Literal>]
-    let ConnectionString = "Data Source=" + __SOURCE_DIRECTORY__  + @"/Phonebook.db;Version=3;"
-
-    [<Literal>]
-    let ResolutionStr = 
-        @"/home/anticnvm/.nuget/packages/system.data.sqlite.core/1.0.111/lib/netstandard2.0"
-        
-    type SqlConnection = SqlDataProvider<
-                            Common.DatabaseProviderTypes.SQLITE, 
-                            ConnectionString = ConnectionString,
-                            ResolutionPath = ResolutionStr,
-                            SQLiteLibrary = Common.SQLiteLibrary.SystemDataSQLite>
-
-    let ctx = SqlConnection.GetDataContext()
-
-    let getAllRecords () = 
-        query {
-            for row in ctx.Main.Phonebook do
-                select (row.FullName, row.PhoneNumber)
-        } |> Seq.toList
+    open System.IO
     
-    let addRecord (name: string, number: string) = 
-        try 
-            let newRow = ctx.Main.Phonebook.``Create(FullName, PhoneNumber)``(name, number)
-            ctx.SubmitUpdates()
-        with 
-        | :? System.Data.SqlClient.SqlException as e 
-            when e.Message.Contains "UNIQUE constraint failed" 
-            -> raise <| RecordException "FAIL: Given phone number has already exist!"
+    type Phonebook = Phonebook of Map<string, string>
 
-    let getPhonesByName name = 
-        query {
-            for record in ctx.Main.Phonebook do
-                where (record.FullName = name)
-                select record.PhoneNumber
-        } |> Seq.toList
-     
-    let getNameByPhone number = 
-        query {
-            for record in ctx.Main.Phonebook do
-                where (record.PhoneNumber = number)
-                select record.FullName
-        } |> Seq.toList
+    let empty = Phonebook Map.empty 
+
+    let addRecord name phone (Phonebook phonebook) = 
+        Map.add name phone phonebook |> Phonebook
+
+    let tryFindPhone name (Phonebook phonebook) = 
+        Map.tryFind name phonebook
+
+    let tryFindName phone (Phonebook phonebook) = 
+        Map.tryFindKey (fun _ value -> value = phone) phonebook
+
+    let printFBook (Phonebook phonebook) = 
+        phonebook
+        |> Map.iter (fun k v ->
+            printfn "%s : %s" k v)
+
+    let saveToFile path (Phonebook phonebook) =
+        use outStream = new FileStream(path, FileMode.Create)
+        let formatter = BinaryFormatter()
+        formatter.Serialize (outStream, phonebook)
+
+    let loadFromFile path = 
+        use inStream = new FileStream(path, FileMode.Open)
+        let formatter = BinaryFormatter()
+        unbox<Phonebook>(formatter.Deserialize inStream)

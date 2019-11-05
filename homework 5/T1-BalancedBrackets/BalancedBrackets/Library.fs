@@ -20,17 +20,17 @@ module BalanceChecker =
 
     /// Check is bracket sequence correct (only '()' '[]' '{}' avaliable)
     let isBracketSequenceCorrect (sequence: char seq) = 
-        let rec loop (lazyList: char LazyList, stack: char ImmutableStack, isIncorrect: bool) = 
-            match lazyList with
-            | LazyList.Nil ->
+        let rec loop (list: char list, stack: char ImmutableStack, isIncorrect: bool) = 
+            match list with
+            | [] ->
                 // true if seq is correct
                 match stack with
                 | Empty -> not isIncorrect
                 | _ -> false
-            | LazyList.Cons(head, tail) ->
+            | head :: tail ->
                 match head with
                 | Open -> loop (tail, stack.Push head, false)
-                | Closed when Option.isNone <| stack.Top () -> loop (LazyList.empty, Empty, true)
+                | Closed when Option.isNone <| stack.Top () -> loop (List.empty, Empty, true)
                 | Closed when pairBrackets.[Option.get <| stack.Top ()] = head -> loop (tail, stack.Pop (), false)
-                | _ -> loop (LazyList.empty, Empty, true)
-        loop (LazyList.ofSeq sequence, Empty, false)
+                | _ -> loop (List.empty, Empty, true)
+        loop (List.ofSeq sequence, Empty, false)
