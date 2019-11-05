@@ -1,7 +1,6 @@
 ﻿namespace BalancedBrackets
 
 module BalanceChecker =  
-    open FSharpx.Collections
 
     /// List of open brackets of three types
     let openBrackets = ['('; '{'; '['] 
