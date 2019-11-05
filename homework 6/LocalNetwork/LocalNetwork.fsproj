@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Computer/IOperationSystem.fs" />
+    <Compile Include="Computer/DefaultOS.fs" />
+    <Compile Include="Computer/Computer.fs" />
+    <Compile Include="LocalNetworkSimulator.fs" />
+    <Compile Include="Program.fs" />
+  </ItemGroup>
+</Project>

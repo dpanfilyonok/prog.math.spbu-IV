@@ -32,9 +32,15 @@ strategy:
     hw5:
       sln_path: ./homework\ 5/homework\ 5.sln
       hw_name: Homework 5
+    hw6:
+      sln_path: ./homework\ 6/homework\ 6.sln
+      hw_name: Homework 6 (Local Network)
     hw7: 
       sln_path: ./homework\ 7/homework\ 7.sln
       hw_name: Homework 7
+    hw8: 
+      sln_path: ./homework\ 8/homework\ 8.sln
+      hw_name: Homework 8
 
 variables:
   buildConfiguration: 'Release'
