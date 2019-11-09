@@ -3,7 +3,7 @@
 module Main = 
     open System
     open System.IO
-    open Logic
+    open Phonebook
 
     let printHelp () =
         let helpString = "\
